@@ -12,10 +12,7 @@ public class TicTacToe : ITicTacToe
 
     public TicTacToe(Player firstPlayer)
     {
-        if (firstPlayer == Player.None)
-        {
-            throw new ArgumentException("first player should be either X or O.");
-        }
+        if (firstPlayer == Player.None) throw new ArgumentException("first player should be either X or O.");
         board = new Player[ROW_NUM][];
         for (var i = 0; i < ROW_NUM; ++i) board[i] = new Player[COL_NUM];
         currentPlayer = firstPlayer;
@@ -36,13 +33,23 @@ public class TicTacToe : ITicTacToe
             Console.WriteLine($"({r},{c})invalid pos.");
             return;
         }
+
         Console.WriteLine($"Current player is {currentPlayer}");
         board[r][c] = currentPlayer;
+        Console.WriteLine(this);
         CheckGameStatus();
         if (!isGameOver)
+        {
             switchPlayer();
+        }
         else
+        {
+            if (winner == Player.None)
+                Console.WriteLine("Game is over! It's stalemate.");
+            else
+                Console.WriteLine($"Game is over! Winner is {winner}.");
             currentPlayer = Player.None;
+        }
     }
 
 
