@@ -28,7 +28,7 @@ public class TicTacToe : ITicTacToe
             return;
         }
 
-        if (!checkValidPos(r, ROW_NUM) || !checkValidPos(c, COL_NUM))
+        if (!CheckValidPos(r, ROW_NUM) || !CheckValidPos(c, COL_NUM))
         {
             Console.WriteLine($"({r},{c})invalid pos.");
             return;
@@ -40,7 +40,7 @@ public class TicTacToe : ITicTacToe
         CheckGameStatus();
         if (!isGameOver)
         {
-            switchPlayer();
+            SwitchPlayer();
         }
         else
         {
@@ -82,7 +82,7 @@ public class TicTacToe : ITicTacToe
 
     public Player GetMarkAt(int r, int c)
     {
-        if (!checkValidPos(r, ROW_NUM) || !checkValidPos(c, COL_NUM))
+        if (!CheckValidPos(r, ROW_NUM) || !CheckValidPos(c, COL_NUM))
         {
             Console.WriteLine($"({r},{c})invalid pos.");
             return Player.None;
@@ -91,7 +91,7 @@ public class TicTacToe : ITicTacToe
         return board[r][c];
     }
 
-    private void switchPlayer()
+    private void SwitchPlayer()
     {
         if (currentPlayer == Player.O)
             currentPlayer = Player.X;
@@ -235,7 +235,7 @@ public class TicTacToe : ITicTacToe
         if (!hasEmptySlot) isGameOver = true;
     }
 
-    private bool checkValidPos(int pos, int maxNum)
+    private bool CheckValidPos(int pos, int maxNum)
     {
         return pos >= 0 && pos < maxNum;
     }
