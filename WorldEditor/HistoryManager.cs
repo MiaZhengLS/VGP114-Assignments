@@ -1,30 +1,47 @@
 namespace WorldEditor;
 
-// HistoryManager has the following functionalities:
-// 1. It records the commands that are executed.
-//    It should not record the command if any exception
-//    is caught when executing the command.
-//    To get possible exceptions, read EntityManager.cs.
-// 2. It records what commands are undone.
-// 3. It abandons commands that are undone once a new command is executed.
-//
-//    If you need a live example to better understand expected behavior,
-//    you can check out this online image editor and play with its history https://www.photopea.com/
-
 public class HistoryManager
 {
+    private readonly Stack<ICommand> exeCmdStack;
+    private readonly Stack<ICommand> undoCmdStack;
+
+    public HistoryManager()
+    {
+        exeCmdStack = new Stack<ICommand>();
+        undoCmdStack = new Stack<ICommand>();
+    }
+
     public void ExecuteCmd(ICommand cmd)
     {
-        // Put your code here...
+        try
+        {
+            cmd.Execute();
+            undoCmdStack.Clear();
+            exeCmdStack.Push(cmd);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+        }
     }
 
     public void UndoCmd()
     {
-        // Put your code here...
+        if (exeCmdStack.Count > 0)
+        {
+            var cmd = exeCmdStack.Pop();
+            cmd.Undo();
+            undoCmdStack.Push(cmd);
+        }
     }
 
     public void RedoCmd()
     {
-        // Put your code here...
+        if (undoCmdStack.Count > 0)
+        {
+            var cmd = undoCmdStack.Pop();
+            cmd.Redo();
+            exeCmdStack.Push(cmd);
+        }
     }
 }
